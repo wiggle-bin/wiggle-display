@@ -1,0 +1,12 @@
+pillow
+spidev
+gpiozero
+lgpio
+pigpio
+RPi.GPIO
+waveshare-epaper
+requests
+
+# Development dependencies
+-e .  # This assumes your project is in the current directory
+black
