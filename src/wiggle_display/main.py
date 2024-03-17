@@ -16,11 +16,11 @@ import logging
 import time
 from wiggle_display.display import EPDText
 import requests
-
+from datetime import datetime
 
 logging.basicConfig(level=logging.DEBUG)
 
-ENDPOINT = "http://wigglebin.local:5000/sensors/environment"
+ENDPOINT = "http://wigglebin.local:5000/sensors"
 
 
 def main():
@@ -30,8 +30,15 @@ def main():
         while True:
             response = requests.get(ENDPOINT)
             data = response.json()
-            first_item = data[0]
-            epd_text.display_text(first_item["temperature"])
+
+            wiggle_gate_time = datetime.fromisoformat(data["wiggle_gate"]["time"])
+
+            epd_text.display_text(
+                [
+                    data["bme"]["temperature"],
+                    f"Gate {wiggle_gate_time.strftime('%I:%M')}",
+                ]
+            )
             time.sleep(300)
 
     except IOError as e:

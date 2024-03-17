@@ -15,7 +15,7 @@ class EPDText:
         self.epd_size = epd_size
         self.epd = epaper.epaper(self.epd_size).EPD()
 
-    def display_text(self, text="hello world"):
+    def display_text(self, text=["hello", "world"]):
         self.epd.init()
         self.epd.Clear()
         font24 = ImageFont.truetype(
@@ -28,6 +28,11 @@ class EPDText:
             "1", (self.epd.height, self.epd.width), 255
         )  # 255: clear the frame
         draw = ImageDraw.Draw(Himage)
-        draw.text((10, 0), text, font=font24, fill=0)
+
+        # Draw each line separately
+        for i, line in enumerate(text):
+            y = i * 28  # Adjust as needed
+            draw.text((10, y), line, font=font24, fill=0)
+
         self.epd.display(self.epd.getbuffer(Himage))
         self.epd.sleep()
